@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Isotel</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+        <!-- Iconos -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <!-- SweertAlert2 -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+            .fondo{
+                background-image: url('https://static.vecteezy.com/system/resources/previews/004/697/688/original/curve-light-blue-background-abstract-free-vector.jpg');
+            }
+        </style>
+            
+    </head>
+    <!-- ejecuta automaticamente -->
+    <body class="fondo">
+
+        <div th:insert="menu :: #menu_buscar"></div> 
+        
+        <div class="container">  
+                
+            <center>
+                <img src="/IsotelLogo.png" height="325px">
+                <br><br>
+                <h4>
+                    ISOTEL SAC, somos una empresa comprometida con<br>el servicio y 
+                    desarrollo del medio, otorgando valor a<br>cada solución ofrecida. 
+                    Obteniendo<br>la satisfacción de las necesidades planteadas de 
+                    los clientes.
+                </h4><br>
+                <h3 style="color:#FF0000";>Solo válido en la ciudad de Huaraz</h3>
+            </center>
+        </div>
+    </body>
+</html>

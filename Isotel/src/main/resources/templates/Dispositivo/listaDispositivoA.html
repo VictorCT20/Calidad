@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dispositivo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+        <!-- Iconos -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <!-- SweertAlert2 -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            
+            function Telefono(texto) {
+                return /^\d{9}$/.test(texto) && texto.startsWith("9");
+            }
+            function esSoloNumeros(texto) {
+                const numerosRegex = /^[0-9]+$/;
+                return numerosRegex.test(texto);
+            }
+            function esNumeroFloat(campo) {
+                const regex = /^[0-9]+(\.[0-9]+)?$/;
+                return regex.test(campo);
+            }
+            function validarNumero(numero) {
+                const numerosRegex = /^[0-9]+$/;
+                return numerosRegex.test(numero) && numero >= 1 && numero <= 50;
+            }
+            function validarNumeroDecimal(numero) {
+                return !isNaN(numero) && numero >= 60 && numero <= 8000;
+            }
+            function tieneCaracteresEspeciales(texto) {
+                const caracteresEspecialesRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+                return caracteresEspecialesRegex.test(texto);
+            }
+            function textRes(texto) {
+                const letrasRegex = /^[a-zA-Z0-9,.\s]+$/;
+                return letrasRegex.test(texto) && texto.length >= 3 && texto.length < 25;
+            }
+            function textDes(texto) {
+                const letrasRegex = /^[a-zA-Z0-9,.\s]+$/;
+                return letrasRegex.test(texto) && texto.length >= 8 && texto.length < 50;
+            }
+            function esMayorDeEdad(fechaNacimiento) {
+                const fechaActual = new Date();
+                const fechaNac = new Date(fechaNacimiento);
+
+                // Calcula la diferencia de años entre la fecha de nacimiento y la fecha actual
+                const edad = fechaActual.getFullYear() - fechaNac.getFullYear();
+
+                // Verifica si la diferencia de años es menor que 18
+                if (edad < 18) return false;
+
+                // Si la diferencia de años es mayor o igual a 18, retorna true
+                return true;
+            }
+            
+            
+            function Registrar()
+            {
+                event.preventDefault();
+
+                const mod = document.getElementById("mod").value;
+                const des = document.getElementById("des").value;
+                const pre = document.getElementById("pre").value;
+                const stk = document.getElementById("stk").value;
+
+                if (mod == "" || des == "" || pre == "" || stk == "")
+                {
+                    //Puedes aqui poner una alerta: llene los campos
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        footer: '<a href="">Why do I have this issue?</a>'
+                    });
+
+                } else if (!textRes(mod)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Modelo no valido!',
+                    });
+                } else if (!textDes(des)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'La descripción debe tener minimo 8 caracteres y maximo 50!',
+                    });
+                }  else if (!validarNumeroDecimal(pre)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Solo se permiten cantidad mayor a 60 y menor que 8000 en el campo Precio!',
+                    });
+                } else if (!validarNumero(stk)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Solo se permiten números enteros mayores a 1 y menores que 50 en el campo Stock!',
+                    });
+                }
+                
+                
+                else
+                {
+                    Swal.fire({
+                        title: 'Do you want to save the changes?',
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Save',
+                        denyButtonText: `Don't save`,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Saved!',
+                                text: '',
+                                icon: 'success',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    const formulario = document.getElementById("registrar");
+                                    formulario.submit();
+                                }
+                            });
+                        } else if (result.isDenied) {
+                            Swal.fire('Changes are not saved', '', 'info');
+                        }
+                    });
+                }
+            }
+            
+            function Actualizar()
+            {
+                event.preventDefault();
+
+                //const id = document.getElementById("id").value;
+                const mod = document.getElementById("modx").value;
+                const des = document.getElementById("desx").value;
+                const pre = document.getElementById("prex").value;
+                const stk = document.getElementById("stkx").value;
+
+                if (mod == "" || des == "" || pre == "" || stk == "")
+                {
+                    //Puedes aqui poner una alerta: llene los campos
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        footer: '<a href="">Why do I have this issue?</a>'
+                    });
+
+                } else if (!textRes(mod)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Nombre no valido!',
+                    });
+                } else if (tieneCaracteresEspeciales(des)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No se permite caracteres especiales en el campo Descripcion!',
+                    });
+                } else if (!validarNumeroDecimal(pre)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Solo se permiten cantidad mayor a 60 y menor que 8000 en el campo Precio!',
+                    });
+                } else if (!validarNumero(stk)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Solo se permiten números enteros mayores a 1 y menores que 50 en el campo Stock!',
+                    });
+                }
+                
+                else
+                {
+                    Swal.fire({
+                        title: 'Do you want to save the changes?',
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Save',
+                        denyButtonText: `Don't save`,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Saved!',
+                                text: '',
+                                icon: 'success',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    const formulario = document.getElementById("actualizar");
+                                    formulario.submit();
+                                }
+                            });
+                        } else if (result.isDenied) {
+                            Swal.fire('Changes are not saved', '', 'info');
+                        }
+                    });
+                }
+            }
+
+
+            function Eliminar(opcion)
+            {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Your file has been deleted.',
+                            icon: 'success',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href = opcion.href;
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            function Editar()
+            {
+                const exampleModal = document.getElementById('modalEditar');
+                exampleModal.addEventListener('show.bs.modal', event => {
+                    // Button that triggered the modal
+                    const button = event.relatedTarget;
+                    
+                    //Datos
+                    const id = button.getAttribute('data-bs-id');
+                    const mod = button.getAttribute('data-bs-mod');
+                    const des = button.getAttribute('data-bs-des');
+                    const pre = button.getAttribute('data-bs-pre');
+                    const stk = button.getAttribute('data-bs-stk');
+                   
+                    //Campos
+                    const campoId = document.getElementById('id');
+                    const campoMod = document.getElementById('modx');
+                    const campoDes = document.getElementById('desx');
+                    const campoPre = document.getElementById('prex');
+                    const campoStk = document.getElementById('stkx');
+                    
+                    //Colocar los datos a los campos
+                    campoId.value = id;
+                    campoMod.value = mod;
+                    campoDes.value = des;
+                    campoPre.value = pre;
+                    campoStk.value = stk;
+                });
+            }
+
+        </script>
+
+    </head>
+    <!-- ejecuta automaticamente -->
+    <body onload="Editar()">
+
+        <div th:insert="menu :: #menu_buscar"></div> <br>
+        
+        <div class="container">  
+            <div>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"><i class="bi bi-plus-circle"></i></button>
+                <!-- <a th:href="@{/nuevo}" class="btn btn-success"><i class="bi bi-plus-circle"></i></a> -->
+                <a th:href="@{orden_asc}" class="btn btn-warning"><i class="bi bi-sort-up"></i></a>
+                <a th:href="@{orden_desc}" class="btn btn-info"><i class="bi bi-sort-down"></i></a>
+            </div>
+
+            <hr>
+            
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong th:text="'Cantidad: '+${cantidad}"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>  
+            
+            <hr>
+
+            <form class="d-flex" role="search" action="buscar" method="POST">
+                <input class="form-control me-2" name="dato" type="search" placeholder="Buscar" aria-label="Buscar">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+
+            <hr>
+
+            <table class="table">
+                <tr class="table-dark">
+                    <th>#</th>
+                    <th>Id</th>
+                    <th>Modelo</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+                <tr th:each="dispositivo,status : ${dispositivos}">
+                    <td th:text="${status.count}"></td>
+                    <td th:text="${dispositivo.id}"></td>
+                    <td th:text="${dispositivo.modelo}"></td>
+                    <td th:text="${dispositivo.descripcion}"></td>
+                    <td th:text="${dispositivo.precio}"></td>
+                    <td th:text="${dispositivo.stock}"></td>
+                    <td>
+                        <!-- th:attr = thymeleaf atributo, envia atributos -->
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalEditar" th:attr="data-bs-id=${dispositivo.id},data-bs-mod=${dispositivo.modelo},data-bs-des=${dispositivo.descripcion},data-bs-pre=${dispositivo.precio},data-bs-stk=${dispositivo.stock}"><i class="bi bi-pencil-square"></i></button>
+                        <!-- <a th:href="@{/editar(id=${producto.id})}" class="btn btn-success"><i class="bi bi-pencil-square"></i></a> -->
+                    </td>
+                    <td>
+                        <a onclick="return Eliminar(this)" th:href="@{eliminar(id=${dispositivo.id})}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <!-- Model REGISTRAR -->
+        <!-- clase 'modal fade' oculta el modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Dispositivo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="registrar" method="POST" id="registrar">
+                            
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Modelo:</label>
+                                <input type="text" name="mod" id="mod" class="form-control" placeholder="Ingrese modelo" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Descripcion:</label>
+                                <textarea class="form-control" name="des" id="des" placeholder="Ingrese descripcion"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Precio:</label>
+                                <input type="number" name="pre" id="pre" class="form-control" placeholder="Ingrese precio" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Stock:</label>
+                                <input type="number" name="stk" id="stk" class="form-control" placeholder="Ingrese stock" >
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button onclick="return Registrar()" type="button" class="btn btn-primary">Registrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model EDITAR/ACTUALIZAR -->
+        <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Dispositivo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="actualizar" method="POST" id="actualizar">
+                            <input type="hidden" name="id" id="id">
+                            
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Modelo:</label>
+                                <input type="text" name="modelo" id="modx" class="form-control" placeholder="Ingrese modelo" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Descripcion:</label>
+                                <textarea class="form-control" name="descripcion" id="desx" placeholder="Ingrese descripcion"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Precio:</label>
+                                <input type="number" name="precio" id="prex" class="form-control" placeholder="Ingrese precio" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Stock:</label>
+                                <input type="number" name="stock" id="stkx" class="form-control" placeholder="Ingrese stock" >
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button onclick="return Actualizar()" type="button" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
